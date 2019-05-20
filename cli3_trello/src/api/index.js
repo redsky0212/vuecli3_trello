@@ -51,8 +51,12 @@ const login = ( email, password ) => {
     });
 }
 
-const getBoardList = () => {
-    return http.get(`${config.baseUrl}boards`);
+const getBoardList = (id) => {
+    if( id ){
+        return http.get(`${config.baseUrl}boards/${id}`);
+    }else{
+        return http.get(`${config.baseUrl}boards`);
+    }
 }
 
 const addBoard = (title) => {
@@ -63,10 +67,19 @@ const addBoard = (title) => {
     });
 }
 
+const createCard = (title, listId, pos) => {
+    return http({
+        method: 'post',
+        url: `${config.baseUrl}cards`,
+        data: {title, listId, pos}
+    });
+};
+
 export {
     fetchHealth,
     getBoardList,
     login,
     setAuthInHeader,
-    addBoard
+    addBoard,
+    createCard
 }

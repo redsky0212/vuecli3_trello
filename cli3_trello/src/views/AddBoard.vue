@@ -53,7 +53,11 @@ export default {
     ]),
     addBoard() {
       this.SET_ISADDBOARD(false);
-      this.ADD_BOARD(this.input).then(() => { this.FETCH_BOARD(); });
+      this.ADD_BOARD(this.input).then(( data ) => {
+        let bid = data.data.item.id;
+        this.$router.push(`/b/${bid}`);
+        //this.FETCH_BOARD();
+      });
     }
   }
 }

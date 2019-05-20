@@ -4,6 +4,9 @@ const mutations = {
     SET_BOARDS(state, list) {
         state.boards = list;
     },
+    SET_BOARD_ITEM(state, item){
+        state.board_item = item;
+    },
     SET_LOGIN(state, data){
         if (!data) { return; }
         state.token = data;
