@@ -3,27 +3,38 @@
     <div class="list-header">
       <div class="list-header-title">{{data.title}}</div>
     </div>
-
+    <div class="card-list">
+      <card-item v-for="card in data.cards" :key="card.id" :data="card">
+      </card-item>
+    </div>
     <div v-if="isAddCard">
-      <add-card @close="isAddCard=false"></add-card>
+      <add-card :list-id="data.id" @close="isAddCard=false"></add-card>
     </div>
     <div v-else>
-      <a class="add-card-btn" href="" @click.prevent="isAddCard=true">&plus; Add a card..</a>
+      <a class="add-card-btn" href="" @click.prevent="onAddCard">&plus; Add a card..</a>
     </div>
   </div>
 </template>
 
 <script>
 import AddCard from './AddCard.vue';
+import CardItem from './CardItem.vue';
 
 export default {
   components: {
     AddCard,
+    CardItem
   },
   props: ['data'],
   data(){
     return {
       isAddCard: false
+    }
+  },
+  methods:{
+    onAddCard(event){
+      event.stopPropagation();
+      this.isAddCard = true;
     }
   }
 }

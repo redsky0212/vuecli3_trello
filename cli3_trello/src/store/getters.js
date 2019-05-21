@@ -5,6 +5,9 @@ const getters = {
     fetchedBoardItem(state){
         return state.board_item;
     },
+    fetchedCard(state) {
+        return state.card;
+    },
     isAuth(state){
         return state.token;
     },

@@ -1,4 +1,11 @@
-import { getBoardList, addBoard, login } from '../api';
+import { 
+    getBoardList,
+    addBoard,
+    login,
+    createCard,
+    getCard,
+    updateCard
+} from '../api';
 
 const actions = {
     FETCH_BOARD({ commit }) {
@@ -32,14 +39,32 @@ const actions = {
                 console.log(error);
             });
     },
-    ADD_CARD({commit}, {title, listId, pos}){
+    ADD_CARD({dispatch, state}, {title, listId, pos}){
+        
         return createCard(title, listId, pos)
             .then(res => {
-                commit('SET_ADDCARD', res.data);
+                dispatch('FETCH_BOARD_ITEM', state.board_item.id);
             })
             .catch(error => {
                 console.log(error);
             });
+    },
+    GET_CARD({ commit }, id) {
+
+        return getCard(id)
+            .then(res => {
+                commit('SET_CARD', res.data.item);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
+    UPDATE_CARD({ commit, dispatch, state }, id, title, description, pos, listId) {
+
+        return updateCard(id, {title, description, pos, listId})
+            .then((res) => {
+                dispatch('GET_CARD', res.data.item);
+            })
     }
 
 };

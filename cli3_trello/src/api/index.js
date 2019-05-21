@@ -68,12 +68,22 @@ const addBoard = (title) => {
 }
 
 const createCard = (title, listId, pos) => {
-    return http({
-        method: 'post',
-        url: `${config.baseUrl}cards`,
-        data: {title, listId, pos}
-    });
+    let obj = {};
+    if(!pos){
+        obj = { title, listId};
+    }else{
+        obj = { title, listId, pos };
+    }
+    return http.post(`${config.baseUrl}cards`, obj);
 };
+
+const getCard = (id) => {
+    return http.get(`${config.baseUrl}cards/${id}`);
+}
+
+const updateCard = (id, payload) => {
+    return http.put(`${config.baseUrl}cards/${id}`, payload);
+}
 
 export {
     fetchHealth,
@@ -81,5 +91,7 @@ export {
     login,
     setAuthInHeader,
     addBoard,
-    createCard
+    createCard,
+    getCard,
+    updateCard
 }

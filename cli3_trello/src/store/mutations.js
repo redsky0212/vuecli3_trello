@@ -20,6 +20,9 @@ const mutations = {
     },
     SET_ISADDBOARD(state, data){
         state.isAddBoard = data;
+    },
+    SET_CARD(state, data){
+        state.card = data;
     }
 };
 
