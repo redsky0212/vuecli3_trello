@@ -3,11 +3,11 @@
         <div class="board-wrapper">
             <div class="board">
                 <div class="board-header">
-                    <span class="board-title">{{fetchedBoardItem.title}}</span>
+                    <span class="board-title">{{board.title}}</span>
                 </div>
                 <div class="list-section-wrapper">
                     <div class="list-section">
-                        <div class="list-wrapper" v-for="list in fetchedBoardItem.lists" :key="list.pos">
+                        <div class="list-wrapper" v-for="list in board.lists" :key="list.pos">
                             <List :data="list" />
                         </div>
                     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions, mapMutations} from 'vuex';
+import {mapGetters, mapActions, mapMutations, mapState} from 'vuex';
 import List from '../components/List.vue';
 
 
@@ -40,6 +40,9 @@ export default {
         this.fetchData();
     },
     computed: {
+        ...mapState({
+          board: 'board_item'
+        }),
         ...mapGetters([
             'fetchedBoardItem'
         ])

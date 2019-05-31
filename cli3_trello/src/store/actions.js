@@ -59,11 +59,12 @@ const actions = {
                 console.log(error);
             });
     },
-    UPDATE_CARD({ commit, dispatch, state }, id, title, description, pos, listId) {
+    UPDATE_CARD({ commit, dispatch, state }, {id, title, description, pos, listId}) {
 
         return updateCard(id, {title, description, pos, listId})
             .then((res) => {
-                dispatch('GET_CARD', res.data.item);
+                
+                dispatch('GET_CARD', res.data.item.id);
             })
     }
 

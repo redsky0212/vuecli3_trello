@@ -2,15 +2,15 @@
   <Modal class="modal-card">
     <div slot="header" class="modal-card-header">
       <div class="modal-card-header-title">
-        <input class="form-control" type="text" :value="fetchedCard.title" @click="toggleTitle=true" @blur="onBlurTitle" :readonly="!toggleTitle" ref="inputTitle" />
+        <input class="form-control" type="text" :value="card.title" @click="toggleTitle=true" @blur="onBlurTitle" :readonly="!toggleTitle" ref="inputTitle" />
       </div>
       <a class="modal-close-btn" href="" @click.prevent="onClose">&times;</a>
     </div>
     <div slot="body">
       <h3>Description</h3>
       <textarea  class="form-control" cols="30" rows="3" placeholder="Add a more detailed description..."
-        readonly
-        v-model="fetchedCard.description"></textarea>
+        :readonly = "!toggleDescription" @click="toggleDescription=true" @blur="onBlurDescription" ref="inputDescription"
+        v-model="card.description"></textarea>
     </div>
     <div slot="footer"></div>
   </Modal>
@@ -26,10 +26,14 @@ export default {
     },
     data(){
         return {
-            toggleTitle : false
+            toggleTitle : false,
+            toggleDescription : false
         }
     },
     computed:{
+        ...mapState({
+          card : 'card'
+        }),
         ...mapGetters([
             'fetchedCard',
             'fetchedBoardItem'
@@ -56,10 +60,24 @@ export default {
             if( !title ){
                 return;
             }
-            this.UPDATE_CARD(this.fetchedCard.id, title)
+            
+            this.UPDATE_CARD({id:this.fetchedCard.id, title})
                 .then(() => {
                     this.fetchCard();
                 });
+        },
+        onBlurDescription(){
+          this.toggleDescription = false;
+          const description = this.$refs.inputDescription.value.trim();
+          if( !description ){
+                return;
+            }
+            
+            this.UPDATE_CARD({id:this.fetchedCard.id, description})
+                .then(() => {
+                    this.fetchCard();
+                });
+
         }
     }
 }
