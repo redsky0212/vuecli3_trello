@@ -70,7 +70,7 @@ export default {
           this.toggleDescription = false;
           const description = this.$refs.inputDescription.value.trim();
           if( !description ){
-                return;
+                //return;
             }
             
             this.UPDATE_CARD({id:this.fetchedCard.id, description})

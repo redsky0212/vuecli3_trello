@@ -21,6 +21,8 @@
 <script>
 import {mapGetters, mapActions, mapMutations, mapState} from 'vuex';
 import List from '../components/List.vue';
+import dragula from 'dragula';
+import 'dragula/dist/dragula.css';
 
 
 export default {
@@ -31,8 +33,19 @@ export default {
         return {
             bid: 0,
             cid:0,
-            loading:false
+            loading:false,
+            dragulaCard:null
         }
+    },
+    updated(){
+      if(this.dragulaCard){
+        this.dragulaCard.destroy();
+      }
+      this.dragulaCard = new dragula([
+        ...Array.from(this.$el.querySelectorAll('.card-list'))
+      ]).on('drop', (el, wrapper, target, siblings) => {
+        console.log('drop');
+      });
     },
     created(){
         

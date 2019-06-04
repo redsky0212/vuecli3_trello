@@ -64,7 +64,7 @@ const actions = {
         return updateCard(id, {title, description, pos, listId})
             .then((res) => {
                 
-                dispatch('GET_CARD', res.data.item.id);
+                dispatch('FETCH_BOARD_ITEM', state.board_item.id);
             })
     }
 
