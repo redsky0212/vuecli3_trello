@@ -21,8 +21,7 @@
 <script>
 import {mapGetters, mapActions, mapMutations, mapState} from 'vuex';
 import List from '../components/List.vue';
-import dragula from 'dragula';
-import 'dragula/dist/dragula.css';
+import dragger from '../utils/dragger';
 
 
 export default {
@@ -34,18 +33,13 @@ export default {
             bid: 0,
             cid:0,
             loading:false,
-            dragulaCard:null
+            cDragger:null
         }
     },
     updated(){
-      if(this.dragulaCard){
-        this.dragulaCard.destroy();
-      }
-      this.dragulaCard = new dragula([
-        ...Array.from(this.$el.querySelectorAll('.card-list'))
-      ]).on('drop', (el, wrapper, target, siblings) => {
-        console.log('drop');
-      });
+
+      this.setCardDragable();
+
     },
     created(){
         
@@ -75,8 +69,33 @@ export default {
 
         },
         ...mapActions([
-            'FETCH_BOARD_ITEM'
-        ])
+            'FETCH_BOARD_ITEM',
+            'UPDATE_CARD'
+        ]),
+        setCardDragable(){
+          if(this.cDragger){ this.cDragger.destroy(); }
+
+          this.cDragger = dragger.init(Array.from(this.$el.querySelectorAll('.card-list')));
+          this.cDragger.on('drop', (el, wrapper, target, siblings) => {
+            const targetCard = {
+              id: el.dataset.cardId * 1,
+              pos: 65535
+            };
+            
+            const {prev, next} = dragger.sibling({
+              el,
+              wrapper, 
+              candidates: Array.from(wrapper.querySelectorAll('.card-item')), 
+              type: 'card'
+            });
+
+            if( !prev && next ){  targetCard.pos = next.pos / 2; }
+            else if( !next && prev ){  targetCard.pos = prev.pos * 2; }
+            else if( prev && next ){  targetCard.pos = (prev.pos + next.pos) / 2 }
+
+            this.UPDATE_CARD(targetCard);
+          });
+        }
         
     }
 }

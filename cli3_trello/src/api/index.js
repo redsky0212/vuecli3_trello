@@ -85,6 +85,10 @@ const updateCard = (id, payload) => {
     return http.put(`${config.baseUrl}cards/${id}`, payload);
 }
 
+const deleteCard = (id) => {
+    return http.delete(`${config.baseUrl}cards/${id}`);
+};
+
 export {
     fetchHealth,
     getBoardList,
@@ -93,5 +97,6 @@ export {
     addBoard,
     createCard,
     getCard,
-    updateCard
+    updateCard,
+    deleteCard
 }
