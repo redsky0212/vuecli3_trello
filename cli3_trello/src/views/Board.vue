@@ -4,6 +4,9 @@
             <div class="board">
                 <div class="board-header">
                     <span class="board-title">{{board.title}}</span>
+                    <a class="board-header-btn show-menu" href="" @click.prevent="onShowSettings">
+                      ... Show Menu
+                    </a>
                 </div>
                 <div class="list-section-wrapper">
                     <div class="list-section">
@@ -14,6 +17,7 @@
                 </div>
             </div>
         </div>
+        <board-settings v-if="isShowBoardSettings"></board-settings>
         <router-view></router-view>
     </div>
 </template>
@@ -22,11 +26,13 @@
 import {mapGetters, mapActions, mapMutations, mapState} from 'vuex';
 import List from '../components/List.vue';
 import dragger from '../utils/dragger';
+import BoardSettings from './BoardSettings.vue';
 
 
 export default {
     components: {
-        List
+        List,
+        BoardSettings
     },
     data(){
         return {
@@ -44,22 +50,26 @@ export default {
     created(){
         
         this.bid = this.$route.params.bid;
-        this.fetchData();
+        this.fetchData().then(() => {
+          this.SET_THEME(this.board.bgColor);
+        });
+
+        this.SET_IS_SHOW_BOARD_SETTINGS(false);
     },
     computed: {
         ...mapState({
-          board: 'board_item'
+          board: 'board_item',
+          isShowBoardSettings : 'isShowBoardSettings'
         }),
         ...mapGetters([
             'fetchedBoardItem'
         ])
     },
-    
     methods:{
         fetchData(){
             this.loading = true;
 
-            this.FETCH_BOARD_ITEM(this.bid)
+            return this.FETCH_BOARD_ITEM(this.bid)
                 .then(data => {
                     this.loading = false;
                 })
@@ -71,6 +81,10 @@ export default {
         ...mapActions([
             'FETCH_BOARD_ITEM',
             'UPDATE_CARD'
+        ]),
+        ...mapMutations([
+          'SET_THEME',
+          'SET_IS_SHOW_BOARD_SETTINGS'
         ]),
         setCardDragable(){
           if(this.cDragger){ this.cDragger.destroy(); }
@@ -95,8 +109,10 @@ export default {
 
             this.UPDATE_CARD(targetCard);
           });
+        },
+        onShowSettings(){
+          this.SET_IS_SHOW_BOARD_SETTINGS(true);
         }
-        
     }
 }
 </script>

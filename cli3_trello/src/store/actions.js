@@ -1,6 +1,8 @@
 import { 
     getBoardList,
     addBoard,
+    destroyBoard,
+    updateBoard,
     login,
     createCard,
     getCard,
@@ -29,6 +31,16 @@ const actions = {
     },
     ADD_BOARD({ commit }, title) {
         return addBoard(title);
+    },
+    DELETE_BOARD({ commit }, {id}) {
+        return destroyBoard(id);
+    },
+    UPDATE_BOARD({state, dispatch}, {id, title, bgColor}){
+        
+        return updateBoard(id, {title, bgColor})
+            .then(() => {
+                dispatch('FETCH_BOARD_ITEM', state.board_item.id)
+            });
     },
     LOGIN({ commit }, {email, password}) {
         

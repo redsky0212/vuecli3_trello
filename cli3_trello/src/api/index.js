@@ -67,6 +67,14 @@ const addBoard = (title) => {
     });
 }
 
+const destroyBoard = (id) => {
+    return http.delete(`${config.baseUrl}boards/${id}`);
+}
+
+const updateBoard = (id, payload) => {
+    return http.put(`${config.baseUrl}boards/${id}`, payload);
+}
+
 const createCard = (title, listId, pos) => {
     let obj = {};
     if(!pos){
@@ -95,6 +103,8 @@ export {
     login,
     setAuthInHeader,
     addBoard,
+    destroyBoard,
+    updateBoard,
     createCard,
     getCard,
     updateCard,

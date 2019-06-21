@@ -36,6 +36,7 @@ export default {
     created(){
         this.loading = true;
         this.FETCH_BOARD().finally(_=>{ this.loading = false; });
+        this.SET_THEME();
     },
     updated() {
         this.$refs.boardItem.forEach(el => {
@@ -47,7 +48,8 @@ export default {
             'FETCH_BOARD'
         ]),
         ...mapMutations([
-            'SET_ISADDBOARD'
+            'SET_ISADDBOARD',
+            'SET_THEME'
         ])
     }
 }
